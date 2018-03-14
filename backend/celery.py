@@ -6,7 +6,8 @@ app = Celery('backend',
              include=['backend.tasks'])
 
 app.conf.update(
-    result_expires=3600
+    result_expires=3600,
+    task_serializer='pickle'
 )
 
 if __name__ == '__main__':
