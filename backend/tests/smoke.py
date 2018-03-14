@@ -12,3 +12,6 @@ class SmokeTest(unittest.TestCase):
         next_state = result.get(timeout=1)
 
         self.assertEqual(state.step_number + 1, next_state.step_number)
+
+if __name__ == '__main__':
+    unittest.main()
