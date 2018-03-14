@@ -37,6 +37,7 @@ class EdgeState(object):
     def __init__(self, from_id, to_id):
         self.from_id = from_id
         self.to_id = to_id
+        self.init_attributes()
 
     def init_attributes(self):
         pass

@@ -1,24 +1,39 @@
 import unittest
 
 from backend.tasks import node_step
-from backend.simulation import NodeState, random_unipolar_zero_clustered
+import backend.simulation
 
 
-class CountryState(NodeState):
+class Country(backend.simulation.NodeState):
 
     def init_attributes(self):
-        self.nuclear_capability = random_unipolar_zero_clustered()
+        self.nuclear_capability = backend.simulation.random_unipolar_zero_clustered() * .9 + 1
+
+
+class Diplomacy(backend.simulation.EdgeState):
+
+    def init_attributes(self):
+        self.trade_amount = backend.simulation.random_unipolar()
+        self.ideological_similarity = backend.simulation.random_unipolar()
+        self.happiness = backend.simulation.random_bipolar()
+
+
+def country_step(country):
+    country.nuclear_capability *= 1.0002
+    country.nuclear_capability = backend.simulation.clamp_unipolar(country.nuclear_capability)
+
+    return country
 
 
 class NuclearDetenteTest(unittest.TestCase):
 
-    def test_node_step(self):
-        state = NodeState()
+    def test_country_step(self):
+        state = Country(1)
 
-        result = node_step.delay(state)
+        result = node_step.delay(state, country_step)
         next_state = result.get(timeout=1)
 
-        self.assertEqual(state.step_number + 1, next_state.step_number)
+        self.assertGreater(next_state.nuclear_capability, state.step_number)
 
 
 if __name__ == '__main__':
