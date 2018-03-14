@@ -8,6 +8,8 @@ app = Celery('backend',
 app.conf.update(
     result_expires=3600,
     task_serializer='pickle',
+    event_serializer='pickle',
+    result_serializer='pickle',
     accept_content=['application/json', 'application/x-python-serialize']
 )
 
